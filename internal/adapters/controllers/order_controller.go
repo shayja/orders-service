@@ -31,14 +31,12 @@ func (oc *OrderController) GetOrders(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "failed", "msg": "Invalid page number"})
 		return
 	}
+
+	// Get the userId from the token and not from the request, to ensure the user can only see their own orders
 	userId, exists := c.Get("userId")
 	if !exists {
+		// Bad token - no userId. Stop here.
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "failed", "msg": "User ID not found in token"})
-		return
-	}
-	
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": "failed", "msg": "Invalid page number"})
 		return
 	}
 

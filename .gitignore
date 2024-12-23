@@ -24,7 +24,6 @@ mocks/
 #custom rules
 .DS_Store
 .vscode
-.github
 postgres
 !.env.test
 __debug*
