@@ -3,20 +3,19 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
-	"os"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/shayja/orders-service/config"
 	"github.com/shayja/orders-service/docs"
 	"github.com/shayja/orders-service/internal/adapters/controllers"
 	"github.com/shayja/orders-service/internal/adapters/middleware"
 	repositories "github.com/shayja/orders-service/internal/adapters/repositories/orders"
 	"github.com/shayja/orders-service/internal/usecases"
+	//"github.com/shayja/orders-service/pkg/jwt"
 )
 
 // Swagger
@@ -38,23 +37,19 @@ import (
 //  @description                Type "Bearer" followed by a space and JWT token. Please add it in the format "Bearer {AccessToken}" to authorize your requests.
 func main() {
 
-	// load
-	LoadENV() 
+	// Load environment variables and configuration
+	cfg, err := config.LoadENV()
+	if err != nil {
+		panic(err)
+	}
 
-	host := os.Getenv("DB_HOST")
-	if host == "" {
-		log.Fatal("DB_HOST environment variable not set")
+	if cfg.DBHost == "" {
+		panic("DB_HOST environment variable not set")
 	}
 
 	// Load environment variables and Format the connection string to the database
-	dbURL := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"), os.Getenv("SSL_MODE"))
-	
 	// Connect to database
-	db, err := sql.Open("postgres", dbURL)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
+	db := RegisterDb(cfg)
 
 	// Initialize repository, usecase, and controller
 	orderRepo := &repositories.OrderRepository{Db: db}
@@ -65,7 +60,9 @@ func main() {
 	r := gin.Default()
 
 	// Define your secret key for token validation
-	secretKey := os.Getenv("ACCESS_TOKEN_SECRET")
+	secretKey := cfg.AccessTokenSecret
+
+	//GenerateToken(secretKey)
 
 	// Register routes
 	RegisterOrderRoutes(r, orderController, secretKey)
@@ -73,18 +70,39 @@ func main() {
 	RegisterSwagger(r)
 
 	// Start server
-	if err := r.Run(":8080"); err != nil {
-		log.Fatal(err)
+	if err := r.Run(":" + cfg.ServerPort); err != nil {
+		panic(err)
 	}
 }
 
-func LoadENV() {
-	// load .env file
-	if err := godotenv.Load(); err != nil {
-        fmt.Printf("Error getting env, not comming through %v", err)
-    }
+func RegisterDb(cfg *config.Config) *sql.DB {
+	dbURL := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPassword, cfg.DBName, cfg.SSLMode)
+
+	db, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	return db
 }
 
+
+/*
+// No user auth in this microservice so we call this func to generate a JWT token using the provided secret key, the secret stored in .env file.
+func GenerateToken(secretKey string) {
+	// User ID and secret key (should be stored securely, not hard-coded)
+	userId := "451fa817-41f4-40cf-8dc2-c9f22aa98a4f"
+
+	// Generate JWT
+	token, err := jwt.GenerateJWT(userId, secretKey)
+	if err != nil {
+		panic(err)
+	}
+
+	// Print the token
+	fmt.Println("Generated Token:", token)
+}
+*/
 func RegisterOrderRoutes(r *gin.Engine, orderController *controllers.OrderController, secretKey string) {
 	// Version 1 routes
 	orderRoutes := r.Group("/api/v1/order")
