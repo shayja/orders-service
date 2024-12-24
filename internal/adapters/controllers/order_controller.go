@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/shayja/orders-service/internal/entities"
 	"github.com/shayja/orders-service/internal/usecases"
-	"github.com/shayja/orders-service/internal/utils"
+	"github.com/shayja/orders-service/pkg/utils"
 )
 
 type OrderController struct {

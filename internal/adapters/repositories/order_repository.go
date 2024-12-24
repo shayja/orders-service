@@ -6,7 +6,7 @@ import (
 
 	"github.com/lib/pq"
 	"github.com/shayja/orders-service/internal/entities"
-	"github.com/shayja/orders-service/internal/utils"
+	"github.com/shayja/orders-service/pkg/utils"
 )
 
 type OrderRepository struct {
