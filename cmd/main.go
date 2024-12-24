@@ -15,7 +15,7 @@ import (
 	"github.com/shayja/orders-service/docs"
 	"github.com/shayja/orders-service/internal/adapters/controllers"
 	"github.com/shayja/orders-service/internal/adapters/middleware"
-	"github.com/shayja/orders-service/internal/adapters/repositories"
+	repositories "github.com/shayja/orders-service/internal/adapters/repositories/orders"
 	"github.com/shayja/orders-service/internal/usecases"
 )
 
