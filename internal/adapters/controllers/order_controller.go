@@ -1,3 +1,4 @@
+// internal/adapters/controllers/order_controller.go
 package controllers
 
 import (
@@ -14,12 +15,14 @@ type OrderController struct {
 	OrderUsecase *usecases.OrderUsecase
 }
 
-// GetAll godoc
-// @Summary      Get all orders
-// @Description  Retrieve a paginated list of all orders
+
+// GetOrders godoc
+// @Summary      Get orders (array) by the user ID
+// @Description  Responds with the list of user orders as JSON.
 // @Tags         Orders
+// @Produce      json
 // @Param        page  query     int  true  "Page number"
-// @Success      200   {object}  map[string]interface{}
+// @Success      200   {array}   entities.Order
 // @Failure      400   {object}  map[string]interface{}
 // @Failure      404   {object}  map[string]interface{}
 // @Router       /order [get]
@@ -61,11 +64,12 @@ func (oc *OrderController) GetOrders(c *gin.Context) {
 }
 
 // GetById godoc
-// @Summary      Get an order by ID
-// @Description  Retrieve order details by order ID
+// @Summary      Get an order by order ID
+// @Description  Responds with an entity of order as JSON.
 // @Tags         Orders
 // @Param        id   path      string  true  "Order ID"
-// @Success      200  {object}  map[string]interface{}
+// @Produce      json
+// @Success      200  {object}  entities.Order
 // @Failure      400  {object}  map[string]interface{}
 // @Failure      404  {object}  map[string]interface{}
 // @Router       /order/{id} [get]
@@ -88,9 +92,10 @@ func (oc *OrderController) GetById(c *gin.Context) {
 }
 
 // Create godoc
-// @Summary      Create a new order
+// @Summary      Create and store a new order in the database.
 // @Description  Add a new order
 // @Tags         Orders
+// @Produce      json
 // @Param        order  body      entities.OrderRequest  true  "Order data"
 // @Success      201      {object}  map[string]interface{}
 // @Failure      400      {object}  map[string]interface{}
