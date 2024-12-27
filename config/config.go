@@ -43,12 +43,12 @@ func LoadENV() (*Config, error) {
 
 	// Load environment variables into a Config struct
 	config := &Config{
-		DBHost:     os.Getenv("DB_HOST"),
+		DBHost:		os.Getenv("DB_HOST"),
 		DBPort: 	os.Getenv("DB_PORT"),
-		DBUser:     os.Getenv("DB_USER"),
+		DBUser: 	os.Getenv("DB_USER"),
 		DBPassword: os.Getenv("DB_PASSWORD"),
-		DBName:     os.Getenv("DB_NAME"),
-		SSLMode:    os.Getenv("SSL_MODE"),
+		DBName: 	os.Getenv("DB_NAME"),
+		SSLMode:	os.Getenv("SSL_MODE"),
 		ServerPort: os.Getenv("SERVER_PORT"),
 		TokenTTL:	os.Getenv("TOKEN_TTL"),
 		AccessTokenSecret: os.Getenv("ACCESS_TOKEN_SECRET"),

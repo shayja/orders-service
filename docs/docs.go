@@ -257,14 +257,6 @@ const docTemplate = `{
         "entities.OrderDetail": {
             "type": "object",
             "properties": {
-                "created_at": {
-                    "description": "The date and time the order detail was created\nexample: 2025-01-01T12:00:00Z",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "The UUID of an order detail (line item)\nexample: 6204037c-30e6-408b-8aaa-dd8219860b4b",
-                    "type": "string"
-                },
                 "order_id": {
                     "description": "The UUID of the related order.\nexample: 451fa817-41f4-40cf-8dc2-c9f22aa98a4f\nrequired: true",
                     "type": "string",
@@ -295,12 +287,6 @@ const docTemplate = `{
                     "type": "number",
                     "format": "float64",
                     "example": 50
-                },
-                "updated_at": {
-                    "description": "The date and time the order detail was last updated\nexample: 2025-01-01T12:00:00Z",
-                    "type": "string",
-                    "minLength": 20,
-                    "example": "2024-07-01T12:00:00Z"
                 }
             }
         },
@@ -308,7 +294,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "order_details": {
-                    "description": "Array of the order line items.\nexample: [{\"product_id\":\"6204037c-30e6-408b-8aaa-dd8219860b4b\",\"quantity\":2,\"unit_price\":50.00}]\nrequired: true",
+                    "description": "Array of the order line items.\nexample: [{ \"product_id\": \"063d0ff7-e17e-4957-8d92-a988caeda8a1\", \"quantity\": 1, \"unit_price\": 101.00, \"total_price\": 102.00 }]\nrequired: true",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/entities.OrderDetail"

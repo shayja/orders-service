@@ -11,7 +11,7 @@ import (
 func GenerateJWT(userId string, secretKey string) (string, error) {
 	// Define the claims (the payload of the JWT)
 	claims := jwt.MapClaims{
-		"sub": userId,       // user ID (subject)
+		"sub": userId,	// user ID (subject)
 		"exp": time.Now().Add(time.Hour * 24).Unix(), // expiration time (1 day)
 		"iat": time.Now().Unix(), // issued at time
 	}

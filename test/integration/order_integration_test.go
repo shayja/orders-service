@@ -55,10 +55,10 @@ func TestGetOrdersIntegration(t *testing.T) {
 
 	// Mock Data
 	mockOrder := entities.Order{
-		Id:         "1",
-		UserId:     "123e4567-e89b-12d3-a456-426614174000",
-		TotalPrice: 100,
-		Status:     1,// "Pending"
+		Id:	"1",
+		UserId:	"123e4567-e89b-12d3-a456-426614174000",
+		TotalPrice:	100,
+		Status:	1,// "Pending"
 	}
 
 	// Setup Mock Repository Data
@@ -73,7 +73,7 @@ func TestGetOrdersIntegration(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 
 	var response struct {
-		Status string            `json:"status"`
+		Status string	`json:"status"`
 		Data   []*entities.Order `json:"data"`
 	}
 	err := json.Unmarshal(w.Body.Bytes(), &response)
@@ -102,9 +102,9 @@ func TestCreateOrderIntegration(t *testing.T) {
 
 	// Mock Request Data
 	orderRequest := &entities.OrderRequest{
-		UserId:      "123e4567-e89b-12d3-a456-426614174000",
-		TotalPrice:  150,
-		Status:      1,//"Pending",
+		UserId:	"123e4567-e89b-12d3-a456-426614174000",
+		TotalPrice: 150,
+		Status: 1,//"Pending",
 		OrderDetails: []entities.OrderDetail{
 			{ProductId: "1", Quantity: 2},
 		},

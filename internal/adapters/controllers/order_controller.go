@@ -17,15 +17,15 @@ type OrderController struct {
 
 
 // GetOrders godoc
-// @Summary      Get orders (array) by the user ID
-// @Description  Responds with the list of user orders as JSON.
-// @Tags         Orders
-// @Produce      json
-// @Param        page  query     int  true  "Page number"
-// @Success      200   {array}   entities.Order
-// @Failure      400   {object}  map[string]interface{}
-// @Failure      404   {object}  map[string]interface{}
-// @Router       /order [get]
+// @Summary	Get orders (array) by the user ID
+// @Description	Responds with the list of user orders as JSON.
+// @Tags	Orders
+// @Produce	json
+// @Param	page	query	int	true	"Page number"
+// @Success	200	{array}	entities.Order
+// @Failure	400	{object}	map[string]interface{}
+// @Failure	404	{object}	map[string]interface{}
+// @Router	 /order [get]
 // @Security apiKey
 func (oc *OrderController) GetOrders(c *gin.Context) {
 	page, err := strconv.Atoi(c.Query("page"))
@@ -64,15 +64,15 @@ func (oc *OrderController) GetOrders(c *gin.Context) {
 }
 
 // GetById godoc
-// @Summary      Get an order by order ID
-// @Description  Responds with an entity of order as JSON.
-// @Tags         Orders
-// @Param        id   path      string  true  "Order ID"
-// @Produce      json
-// @Success      200  {object}  entities.Order
-// @Failure      400  {object}  map[string]interface{}
-// @Failure      404  {object}  map[string]interface{}
-// @Router       /order/{id} [get]
+// @Summary	Get an order by order ID
+// @Description	Responds with an entity of order as JSON.
+// @Tags	Orders
+// @Param	id	path	string	true	"Order ID"
+// @Produce	json
+// @Success	200	{object}	entities.Order
+// @Failure	400	{object}	map[string]interface{}
+// @Failure	404	{object}	map[string]interface{}
+// @Router	/order/{id} [get]
 // @Security apiKey
 func (oc *OrderController) GetById(c *gin.Context) {
 
@@ -92,14 +92,14 @@ func (oc *OrderController) GetById(c *gin.Context) {
 }
 
 // Create godoc
-// @Summary      Create and store a new order in the database.
-// @Description  Add a new order
-// @Tags         Orders
-// @Produce      json
-// @Param        order  body      entities.OrderRequest  true  "Order data"
-// @Success      201      {object}  map[string]interface{}
-// @Failure      400      {object}  map[string]interface{}
-// @Router       /order [post]
+// @Summary	Create and store a new order in the database.
+// @Description	Add a new order
+// @Tags	Orders
+// @Produce	json
+// @Param	order	body	entities.OrderRequest	true	"Order data"
+// @Success	201	{object}	map[string]interface{}
+// @Failure	400	{object}	map[string]interface{}
+// @Router	/order [post]
 // @Security apiKey
 func (oc *OrderController) Create(c *gin.Context) {
 
@@ -119,14 +119,14 @@ func (oc *OrderController) Create(c *gin.Context) {
 }
 
 // UpdateStatus godoc
-// @Summary      Update order status
-// @Description  Update the status of an order
-// @Tags         Orders
-// @Param        id      path      string  true  "Order ID"
-// @Param        status  body      int     true  "New status"
-// @Success      200     {object}  map[string]interface{}
-// @Failure      400     {object}  map[string]interface{}
-// @Router       /order/{id}/status [put]
+// @Summary	Update order status
+// @Description	Update the status of an order
+// @Tags	Orders
+// @Param	id	path	string	true	"Order ID"
+// @Param	status	body	int	true	"New status"
+// @Success	200	{object}	map[string]interface{}
+// @Failure	400	{object}	map[string]interface{}
+// @Router	/order/{id}/status [put]
 // @Security apiKey
 func (oc *OrderController) UpdateStatus(c *gin.Context) {
 

@@ -49,16 +49,6 @@ definitions:
     type: object
   entities.OrderDetail:
     properties:
-      created_at:
-        description: |-
-          The date and time the order detail was created
-          example: 2025-01-01T12:00:00Z
-        type: string
-      id:
-        description: |-
-          The UUID of an order detail (line item)
-          example: 6204037c-30e6-408b-8aaa-dd8219860b4b
-        type: string
       order_id:
         description: |-
           The UUID of the related order.
@@ -100,20 +90,13 @@ definitions:
         example: 50
         format: float64
         type: number
-      updated_at:
-        description: |-
-          The date and time the order detail was last updated
-          example: 2025-01-01T12:00:00Z
-        example: "2024-07-01T12:00:00Z"
-        minLength: 20
-        type: string
     type: object
   entities.OrderRequest:
     properties:
       order_details:
         description: |-
           Array of the order line items.
-          example: [{"product_id":"6204037c-30e6-408b-8aaa-dd8219860b4b","quantity":2,"unit_price":50.00}]
+          example: [{ "product_id": "063d0ff7-e17e-4957-8d92-a988caeda8a1", "quantity": 1, "unit_price": 101.00, "total_price": 102.00 }]
           required: true
         items:
           $ref: '#/definitions/entities.OrderDetail'
