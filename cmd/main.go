@@ -91,10 +91,10 @@ func RegisterDb(cfg *config.Config) *sql.DB {
 // No user auth in this microservice so we call this func to generate a JWT token using the provided secret key, the secret stored in .env file.
 func GenerateToken(secretKey string) {
 	// User ID and secret key (should be stored securely, not hard-coded)
-	userId := "451fa817-41f4-40cf-8dc2-c9f22aa98a4f"
+	useID := "451fa817-41f4-40cf-8dc2-c9f22aa98a4f"
 
 	// Generate JWT
-	token, err := jwt.GenerateJWT(userId, secretKey)
+	token, err := jwt.GenerateJWT(useID, secretKey)
 	if err != nil {
 		panic(err)
 	}
@@ -113,7 +113,7 @@ func RegisterOrderRoutes(r *gin.Engine, orderController *controllers.OrderContro
 		// Register version 1 order routes
 		orderRoutes.GET("", orderController.GetOrders)
 		orderRoutes.POST("", orderController.Create)
-		orderRoutes.GET(":id", orderController.GetById)
+		orderRoutes.GET(":id", orderController.GetByID)
 		orderRoutes.PUT(":id/status", orderController.UpdateStatus)
 	}
 }

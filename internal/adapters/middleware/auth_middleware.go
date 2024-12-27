@@ -46,8 +46,8 @@ func AuthMiddleware(secretKey string) gin.HandlerFunc {
 		}
 
 		// Set the user ID in the context to use it later in the handler
-		userId := claims["sub"].(string)
-		c.Set("userId", userId)
+		useID := claims["sub"].(string)
+		c.Set("useID", useID)
 
 		// Continue with the next middleware/handler
 		c.Next()

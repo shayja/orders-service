@@ -20,15 +20,15 @@ func setupRouter(orderController *controllers.OrderController) *gin.Engine {
 
 	// Middleware for user ID (Mock user extraction)
 	router.Use(func(c *gin.Context) {
-		// Mock userId extraction from the token
-		c.Set("userId", "123e4567-e89b-12d3-a456-426614174000")
+		// Mock useID extraction from the token
+		c.Set("useID", "123e4567-e89b-12d3-a456-426614174000")
 		c.Next()
 	})
 
 	api := router.Group("/api/v1")
 	{
 		api.GET("/orders", orderController.GetOrders)
-		api.GET("/order/:id", orderController.GetById)
+		api.GET("/order/:id", orderController.GetByID)
 		api.POST("/order", orderController.Create)
 		api.PUT("/order/:id/status", orderController.UpdateStatus)
 	}
@@ -55,8 +55,8 @@ func TestGetOrdersIntegration(t *testing.T) {
 
 	// Mock Data
 	mockOrder := entities.Order{
-		Id:	"1",
-		UserId:	"123e4567-e89b-12d3-a456-426614174000",
+		ID:	"1",
+		UserID:	"123e4567-e89b-12d3-a456-426614174000",
 		TotalPrice:	100,
 		Status:	1,// "Pending"
 	}
@@ -80,7 +80,7 @@ func TestGetOrdersIntegration(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "success", response.Status)
 	assert.Equal(t, 1, len(response.Data))
-	assert.Equal(t, mockOrder.Id, response.Data[0].Id)
+	assert.Equal(t, mockOrder.ID, response.Data[0].ID)
 }
 
 func TestCreateOrderIntegration(t *testing.T) {
@@ -102,11 +102,11 @@ func TestCreateOrderIntegration(t *testing.T) {
 
 	// Mock Request Data
 	orderRequest := &entities.OrderRequest{
-		UserId:	"123e4567-e89b-12d3-a456-426614174000",
+		UserID:	"123e4567-e89b-12d3-a456-426614174000",
 		TotalPrice: 150,
 		Status: 1,//"Pending",
 		OrderDetails: []entities.OrderDetail{
-			{ProductId: "1", Quantity: 2},
+			{ProductID: "1", Quantity: 2},
 		},
 	}
 	body, _ := json.Marshal(orderRequest)
@@ -122,14 +122,14 @@ func TestCreateOrderIntegration(t *testing.T) {
 
 	var response struct {
 		Status string `json:"status"`
-		Id     string `json:"id"`
+		ID     string `json:"id"`
 	}
 	err := json.Unmarshal(w.Body.Bytes(), &response)
 	assert.NoError(t, err)
 	assert.Equal(t, "success", response.Status)
-	assert.NotEmpty(t, response.Id)
+	assert.NotEmpty(t, response.ID)
 
-	entity, _ := mockRepo.GetById(response.Id)
+	entity, _ := mockRepo.GetByID(response.ID)
 	assert.NotNil(t, entity)
 }
 
@@ -138,19 +138,19 @@ type MockOrderRepository struct {
 	orders []*entities.Order
 }
 
-func (m *MockOrderRepository) GetAllOrders(page int, userId string) ([]*entities.Order, error) {
+func (m *MockOrderRepository) GetAllOrders(page int, useID string) ([]*entities.Order, error) {
 	var result []*entities.Order
 	for _, order := range m.orders {
-		if order.UserId == userId {
+		if order.UserID == useID {
 			result = append(result, order)
 		}
 	}
 	return result, nil
 }
 
-func (m *MockOrderRepository) GetById(id string) (*entities.Order, error) {
+func (m *MockOrderRepository) GetByID(id string) (*entities.Order, error) {
 	for _, order := range m.orders {
-		if order.Id == id {
+		if order.ID == id {
 			return order, nil
 		}
 	}
@@ -158,20 +158,20 @@ func (m *MockOrderRepository) GetById(id string) (*entities.Order, error) {
 }
 
 func (m *MockOrderRepository) Create(orderRequest *entities.OrderRequest) (string, error) {
-	newId := utils.CreateNewUUID().String()
+	newID := utils.CreateNewUUID().String()
 	newOrder := &entities.Order{
-		Id:         newId,
-		UserId:     orderRequest.UserId,
+		ID:         newID,
+		UserID:     orderRequest.UserID,
 		TotalPrice: orderRequest.TotalPrice,
 		Status:     orderRequest.Status,
 	}
 	m.orders = append(m.orders, newOrder)
-	return newId, nil
+	return newID, nil
 }
 
 func (m *MockOrderRepository) UpdateStatus(id string, status int) (*entities.Order, error) {
 	for _, order := range m.orders {
-		if order.Id == id {
+		if order.ID == id {
 			order.Status = status
 			return order, nil
 		}

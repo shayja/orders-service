@@ -6,8 +6,8 @@ import (
 )
 
 type OrderRepository interface {
-	GetAllOrders(page int, userId string) ([]*entities.Order, error)
-	GetById(id string) (*entities.Order, error)
+	GetAllOrders(page int, useID string) ([]*entities.Order, error)
+	GetByID(id string) (*entities.Order, error)
 	Create(orderRequest *entities.OrderRequest) (string, error)
 	UpdateStatus(id string, status int) (*entities.Order, error)
 }
@@ -16,12 +16,12 @@ type OrderUsecase struct {
 	OrderRepo OrderRepository
 }
 
-func (uc *OrderUsecase) GetOrders(page int, userId string) ([]*entities.Order, error) {
-	return uc.OrderRepo.GetAllOrders(page, userId)
+func (uc *OrderUsecase) GetOrders(page int, useID string) ([]*entities.Order, error) {
+	return uc.OrderRepo.GetAllOrders(page, useID)
 }
 
-func (uc *OrderUsecase) GetById(id string) (*entities.Order, error) {
-	return uc.OrderRepo.GetById(id)
+func (uc *OrderUsecase) GetByID(id string) (*entities.Order, error) {
+	return uc.OrderRepo.GetByID(id)
 }
 
 func (uc *OrderUsecase) Create(orderRequest *entities.OrderRequest) (string, error) {

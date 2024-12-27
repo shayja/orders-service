@@ -35,22 +35,22 @@ func (oc *OrderController) GetOrders(c *gin.Context) {
 		return
 	}
 
-	// Get the userId from the token and not from the request, to ensure the user can only see their own orders
-	userId, exists := c.Get("userId")
+	// Get the useID from the token and not from the request, to ensure the user can only see their own orders
+	useID, exists := c.Get("useID")
 	if !exists {
-		// Bad token - no userId. Stop here.
+		// Bad token - no useID. Stop here.
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "failed", "msg": "User ID not found in token"})
 		return
 	}
 
-	// Validate the userId is a valid UUID
-	if !utils.IsValidUUID(userId.(string)) {
+	// Validate the useID is a valid UUID
+	if !utils.IsValidUUID(useID.(string)) {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "failed", "msg": "Invalid user id"})
 		return
 	}
 
-	// Fetch the orders using the userId from the token
-	res, err := oc.OrderUsecase.GetOrders(page, userId.(string))
+	// Fetch the orders using the useID from the token
+	res, err := oc.OrderUsecase.GetOrders(page, useID.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -63,7 +63,7 @@ func (oc *OrderController) GetOrders(c *gin.Context) {
 	}
 }
 
-// GetById godoc
+// GetByID godoc
 // @Summary	Get an order by order ID
 // @Description	Responds with an entity of order as JSON.
 // @Tags	Orders
@@ -74,16 +74,16 @@ func (oc *OrderController) GetOrders(c *gin.Context) {
 // @Failure	404	{object}	map[string]interface{}
 // @Router	/order/{id} [get]
 // @Security apiKey
-func (oc *OrderController) GetById(c *gin.Context) {
+func (oc *OrderController) GetByID(c *gin.Context) {
 
-	var uri entities.IdRequest
+	var uri entities.IDRequest
 	if err := c.ShouldBindUri(&uri); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "failed", "msg": err})
 		return
 	}
 
-	res, err := oc.OrderUsecase.GetById(uri.Id)
-	if err != nil || !utils.IsValidUUID(res.Id) {
+	res, err := oc.OrderUsecase.GetByID(uri.ID)
+	if err != nil || !utils.IsValidUUID(res.ID) {
 		c.JSON(http.StatusNotFound, gin.H{"status": "failed", "msg": "Order not found"})
 		return
 	}
@@ -109,13 +109,13 @@ func (oc *OrderController) Create(c *gin.Context) {
 		return
 	}
 
-	insertedId, err := oc.OrderUsecase.Create(post)
+	insertedID, err := oc.OrderUsecase.Create(post)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "failed", "msg": err})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"status": "success", "id": insertedId, "msg": nil})
+	c.JSON(http.StatusCreated, gin.H{"status": "success", "id": insertedID, "msg": nil})
 }
 
 // UpdateStatus godoc
@@ -130,7 +130,7 @@ func (oc *OrderController) Create(c *gin.Context) {
 // @Security apiKey
 func (oc *OrderController) UpdateStatus(c *gin.Context) {
 
-	var uri entities.IdRequest
+	var uri entities.IDRequest
 	if err := c.ShouldBindUri(&uri); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "failed", "msg": err})
 		return
@@ -144,7 +144,7 @@ func (oc *OrderController) UpdateStatus(c *gin.Context) {
 		return
 	}
 
-	res, err := oc.OrderUsecase.UpdateStatus(uri.Id, status.Status)
+	res, err := oc.OrderUsecase.UpdateStatus(uri.ID, status.Status)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "failed", "msg": err})
 		return

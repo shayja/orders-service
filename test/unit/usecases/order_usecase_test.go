@@ -1,4 +1,4 @@
-package usecases_test
+package usecases
 
 import (
 	"errors"
@@ -14,12 +14,12 @@ type OrderRepositoryMock struct {
 	mock.Mock
 }
 
-func (m *OrderRepositoryMock) GetAllOrders(page int, userId string) ([]*entities.Order, error) {
-	args := m.Called(page, userId)
+func (m *OrderRepositoryMock) GetAllOrders(page int, useID string) ([]*entities.Order, error) {
+	args := m.Called(page, useID)
 	return args.Get(0).([]*entities.Order), args.Error(1)
 }
 
-func (m *OrderRepositoryMock) GetById(id string) (*entities.Order, error) {
+func (m *OrderRepositoryMock) GetByID(id string) (*entities.Order, error) {
 	args := m.Called(id)
 	return args.Get(0).(*entities.Order), args.Error(1)
 }

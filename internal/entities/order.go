@@ -11,11 +11,11 @@ import (
 type Order struct {
 	// The UUID of a product
 	// example: 6204037c-30e6-408b-8aaa-dd8219860b4b
-	Id string `json:"id" example:"6204037c-30e6-408b-8aaa-dd8219860b4b" minLength:"36"`
+	ID string `json:"id" example:"6204037c-30e6-408b-8aaa-dd8219860b4b" minLength:"36"`
 	// The user that created the order
 	// example: 451fa817-41f4-40cf-8dc2-c9f22aa98a4f
 	// required: true
-	UserId string `json:"user_id" example:"451fa817-41f4-40cf-8dc2-c9f22aa98a4f" minLength:"36"`
+	UserID string `json:"user_id" example:"451fa817-41f4-40cf-8dc2-c9f22aa98a4f" minLength:"36"`
 	// The total price of the order
 	// example: 100.00
 	// required: true
@@ -36,15 +36,15 @@ type Order struct {
 type OrderDetail struct {
 	// The UUID of an order detail (line item)
 	// swagger:ignore
-	Id string `json:"id" swaggerignore:"true"`
+	ID string `json:"id" swaggerignore:"true"`
 	// The UUID of the related order.
 	// example: 451fa817-41f4-40cf-8dc2-c9f22aa98a4f
 	// required: true
-	OrderId string `json:"order_id" example:"451fa817-41f4-40cf-8dc2-c9f22aa98a4f" minLength:"36"`
+	OrderID string `json:"order_id" example:"451fa817-41f4-40cf-8dc2-c9f22aa98a4f" minLength:"36"`
 	// The UUID of the related product
 	// example: 063d0ff7-e17e-4957-8d92-a988caeda8a1
 	// required: true
-	ProductId string `json:"product_id" example:"063d0ff7-e17e-4957-8d92-a988caeda8a1" minLength:"36"`
+	ProductID string `json:"product_id" example:"063d0ff7-e17e-4957-8d92-a988caeda8a1" minLength:"36"`
 	// The quantity of the product
 	// example: 2
 	// required: true
@@ -70,7 +70,7 @@ type OrderRequest struct {
 	// The user that creates the order
 	// example: 451fa817-41f4-40cf-8dc2-c9f22aa98a4f
 	// required: true
-	UserId string `json:"user_id" example:"063d0ff7-e17e-4957-8d92-a988caeda8a1" minLength:"36"`
+	UserID string `json:"user_id" example:"063d0ff7-e17e-4957-8d92-a988caeda8a1" minLength:"36"`
 	// The total price of the order
 	// example: 100.00
 	// required: true
@@ -86,4 +86,4 @@ type OrderRequest struct {
 }
 
 // Convert order details to database-compatible array
-func (v OrderDetail) Value() (driver.Value, error) { return []byte(fmt.Sprintf("(%s,%d,%f)", v.ProductId, v.Quantity, v.UnitPrice)), nil }
+func (v OrderDetail) Value() (driver.Value, error) { return []byte(fmt.Sprintf("(%s,%d,%f)", v.ProductID, v.Quantity, v.UnitPrice)), nil }
