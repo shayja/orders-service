@@ -27,7 +27,7 @@ type OrderController struct {
 // @Failure	404	{object}	map[string]interface{}
 // @Router	 /order [get]
 // @Security apiKey
-func (oc *OrderController) GetOrders(c *gin.Context) {
+func (uc *OrderController) GetOrders(c *gin.Context) {
 	page, err := strconv.Atoi(c.Query("page"))
 
 	if err != nil {
@@ -50,7 +50,7 @@ func (oc *OrderController) GetOrders(c *gin.Context) {
 	}
 
 	// Fetch the orders using the useID from the token
-	res, err := oc.OrderUsecase.GetOrders(page, useID.(string))
+	res, err := uc.OrderUsecase.GetOrders(page, useID.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -74,7 +74,7 @@ func (oc *OrderController) GetOrders(c *gin.Context) {
 // @Failure	404	{object}	map[string]interface{}
 // @Router	/order/{id} [get]
 // @Security apiKey
-func (oc *OrderController) GetByID(c *gin.Context) {
+func (uc *OrderController) GetByID(c *gin.Context) {
 
 	var uri entities.IDRequest
 	if err := c.ShouldBindUri(&uri); err != nil {
@@ -82,7 +82,7 @@ func (oc *OrderController) GetByID(c *gin.Context) {
 		return
 	}
 
-	res, err := oc.OrderUsecase.GetByID(uri.ID)
+	res, err := uc.OrderUsecase.GetByID(uri.ID)
 	if err != nil || !utils.IsValidUUID(res.ID) {
 		c.JSON(http.StatusNotFound, gin.H{"status": "failed", "msg": "Order not found"})
 		return
@@ -101,7 +101,7 @@ func (oc *OrderController) GetByID(c *gin.Context) {
 // @Failure	400	{object}	map[string]interface{}
 // @Router	/order [post]
 // @Security apiKey
-func (oc *OrderController) Create(c *gin.Context) {
+func (uc *OrderController) Create(c *gin.Context) {
 
 	var post *entities.OrderRequest
 	if err := c.ShouldBind(&post); err != nil {
@@ -109,7 +109,7 @@ func (oc *OrderController) Create(c *gin.Context) {
 		return
 	}
 
-	insertedID, err := oc.OrderUsecase.Create(post)
+	insertedID, err := uc.OrderUsecase.Create(post)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "failed", "msg": err})
 		return
@@ -128,7 +128,7 @@ func (oc *OrderController) Create(c *gin.Context) {
 // @Failure	400	{object}	map[string]interface{}
 // @Router	/order/{id}/status [put]
 // @Security apiKey
-func (oc *OrderController) UpdateStatus(c *gin.Context) {
+func (uc *OrderController) UpdateStatus(c *gin.Context) {
 
 	var uri entities.IDRequest
 	if err := c.ShouldBindUri(&uri); err != nil {
@@ -144,7 +144,7 @@ func (oc *OrderController) UpdateStatus(c *gin.Context) {
 		return
 	}
 
-	res, err := oc.OrderUsecase.UpdateStatus(uri.ID, status.Status)
+	res, err := uc.OrderUsecase.UpdateStatus(uri.ID, status.Status)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "failed", "msg": err})
 		return

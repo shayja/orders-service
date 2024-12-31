@@ -26,7 +26,7 @@ func LoadENV() (*Config, error) {
 	
 	// Load the .env file if it exists
 	if err := godotenv.Load(); err != nil {
-		return nil, fmt.Errorf("Error loading .env file: %v", err)
+		return nil, fmt.Errorf("error loading .env file: %v", err)
 	}
 
 	/*
@@ -59,9 +59,8 @@ func LoadENV() (*Config, error) {
 	validate := validator.New()
 	err := validate.Struct(config)
 	if err != nil {
-		return nil, fmt.Errorf("Configuration validation failed: %v", err)
+		return nil, fmt.Errorf("configuration validation failed: %v", err)
 	}
 
 	return config, nil
 }
-

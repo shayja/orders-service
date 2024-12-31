@@ -1,4 +1,4 @@
-// repositories/orders/order_repository.go
+// adapters/repositories/orders/order_repository.go
 package repositories
 
 import (

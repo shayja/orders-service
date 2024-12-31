@@ -1,3 +1,4 @@
+// cmd/main.go
 package main
 
 import (
@@ -15,7 +16,6 @@ import (
 	"github.com/shayja/orders-service/internal/adapters/middleware"
 	repositories "github.com/shayja/orders-service/internal/adapters/repositories/orders"
 	"github.com/shayja/orders-service/internal/usecases"
-	//"github.com/shayja/orders-service/pkg/jwt"
 )
 
 // Swagger
@@ -52,9 +52,9 @@ func main() {
 	db := RegisterDb(cfg)
 
 	// Initialize repository, usecase, and controller
-	orderRepo := &repositories.OrderRepository{Db: db}
-	orderUsecase := &usecases.OrderUsecase{OrderRepo: orderRepo}
-	orderController := &controllers.OrderController{OrderUsecase: orderUsecase}
+	repo := &repositories.OrderRepository{Db: db}
+	usecase := &usecases.OrderUsecase{OrderRepo: repo}
+	controller := &controllers.OrderController{OrderUsecase: usecase}
 
 	// Initialize Gin
 	r := gin.Default()
@@ -65,7 +65,7 @@ func main() {
 	//GenerateToken(secretKey)
 
 	// Register routes
-	RegisterOrderRoutes(r, orderController, secretKey)
+	RegisterRoutes(r, controller, secretKey)
 
 	RegisterSwagger(r)
 
@@ -82,7 +82,7 @@ func RegisterDb(cfg *config.Config) *sql.DB {
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+	//defer db.Close()
 	return db
 }
 
@@ -103,18 +103,18 @@ func GenerateToken(secretKey string) {
 	fmt.Println("Generated Token:", token)
 }
 */
-func RegisterOrderRoutes(r *gin.Engine, orderController *controllers.OrderController, secretKey string) {
+func RegisterRoutes(r *gin.Engine, controller *controllers.OrderController, secretKey string) {
 	// Version 1 routes
-	orderRoutes := r.Group("/api/v1/order")
+	routes := r.Group("/api/v1/order")
 	{
 		// Apply AuthMiddleware globally or for specific routes
-		orderRoutes.Use(middleware.AuthMiddleware(secretKey))
+		routes.Use(middleware.AuthMiddleware(secretKey))
 
 		// Register version 1 order routes
-		orderRoutes.GET("", orderController.GetOrders)
-		orderRoutes.POST("", orderController.Create)
-		orderRoutes.GET(":id", orderController.GetByID)
-		orderRoutes.PUT(":id/status", orderController.UpdateStatus)
+		routes.GET("", controller.GetOrders)
+		routes.POST("", controller.Create)
+		routes.GET(":id", controller.GetByID)
+		routes.PUT(":id/status", controller.UpdateStatus)
 	}
 }
 
@@ -127,5 +127,4 @@ func RegisterSwagger(r *gin.Engine) {
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
 }
