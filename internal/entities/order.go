@@ -11,7 +11,7 @@ import (
 type Order struct {
 	// The UUID of a product
 	// example: 6204037c-30e6-408b-8aaa-dd8219860b4b
-	ID string `json:"id" example:"6204037c-30e6-408b-8aaa-dd8219860b4b" minLength:"36"`
+	ID string `json:"id" sql:"type:uuid;primary_key;default:uuid_generate_v4()" example:"6204037c-30e6-408b-8aaa-dd8219860b4b" minLength:"36"`
 	// The user that created the order
 	// example: 451fa817-41f4-40cf-8dc2-c9f22aa98a4f
 	// required: true
@@ -36,7 +36,7 @@ type Order struct {
 type OrderDetail struct {
 	// The UUID of an order detail (line item)
 	// swagger:ignore
-	ID string `json:"id" swaggerignore:"true"`
+	ID string `json:"id" sql:"type:uuid;primary_key;default:uuid_generate_v4()" swaggerignore:"true"`
 	// The UUID of the related order.
 	// example: 451fa817-41f4-40cf-8dc2-c9f22aa98a4f
 	// required: true
