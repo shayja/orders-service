@@ -20,8 +20,8 @@ func setupRouter(orderController *controllers.OrderController) *gin.Engine {
 
 	// Middleware for user ID (Mock user extraction)
 	router.Use(func(c *gin.Context) {
-		// Mock useID extraction from the token
-		c.Set("useID", "123e4567-e89b-12d3-a456-426614174000")
+		// Mock userID extraction from the token
+		c.Set("userID", "123e4567-e89b-12d3-a456-426614174000")
 		c.Next()
 	})
 
@@ -138,10 +138,10 @@ type MockOrderRepository struct {
 	orders []*entities.Order
 }
 
-func (m *MockOrderRepository) GetAllOrders(page int, useID string) ([]*entities.Order, error) {
+func (m *MockOrderRepository) GetAllOrders(page int, userID string) ([]*entities.Order, error) {
 	var result []*entities.Order
 	for _, order := range m.orders {
-		if order.UserID == useID {
+		if order.UserID == userID {
 			result = append(result, order)
 		}
 	}

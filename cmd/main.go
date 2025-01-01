@@ -91,10 +91,10 @@ func RegisterDb(cfg *config.Config) *sql.DB {
 // No user auth in this microservice so we call this func to generate a JWT token using the provided secret key, the secret stored in .env file.
 func GenerateToken(secretKey string) {
 	// User ID and secret key (should be stored securely, not hard-coded)
-	useID := "451fa817-41f4-40cf-8dc2-c9f22aa98a4f"
+	userID := "451fa817-41f4-40cf-8dc2-c9f22aa98a4f"
 
 	// Generate JWT
-	token, err := jwt.GenerateJWT(useID, secretKey)
+	token, err := jwt.GenerateJWT(userID, secretKey)
 	if err != nil {
 		panic(err)
 	}

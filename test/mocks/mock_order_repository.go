@@ -10,8 +10,8 @@ type MockOrderRepository struct {
 }
 
 // Mock implementation for GetAllOrders
-func (m *MockOrderRepository) GetAllOrders(page int, useID string) ([]*entities.Order, error) {
-	args := m.Called(page, useID)
+func (m *MockOrderRepository) GetAllOrders(page int, userID string) ([]*entities.Order, error) {
+	args := m.Called(page, userID)
 	return args.Get(0).([]*entities.Order), args.Error(1)
 }
 

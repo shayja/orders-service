@@ -14,8 +14,8 @@ type OrderRepositoryMock struct {
 	mock.Mock
 }
 
-func (m *OrderRepositoryMock) GetAllOrders(page int, useID string) ([]*entities.Order, error) {
-	args := m.Called(page, useID)
+func (m *OrderRepositoryMock) GetAllOrders(page int, userID string) ([]*entities.Order, error) {
+	args := m.Called(page, userID)
 	return args.Get(0).([]*entities.Order), args.Error(1)
 }
 

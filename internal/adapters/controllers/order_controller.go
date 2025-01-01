@@ -35,22 +35,22 @@ func (uc *OrderController) GetOrders(c *gin.Context) {
 		return
 	}
 
-	// Get the useID from the token and not from the request, to ensure the user can only see their own orders
-	useID, exists := c.Get("useID")
+	// Get the userID from the token and not from the request, to ensure the user can only see their own orders
+	userID, exists := c.Get("userID")
 	if !exists {
-		// Bad token - no useID. Stop here.
+		// Bad token - no userID. Stop here.
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "failed", "msg": "User ID not found in token"})
 		return
 	}
 
-	// Validate the useID is a valid UUID
-	if !utils.IsValidUUID(useID.(string)) {
+	// Validate the userID is a valid UUID
+	if !utils.IsValidUUID(userID.(string)) {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "failed", "msg": "Invalid user id"})
 		return
 	}
 
-	// Fetch the orders using the useID from the token
-	res, err := uc.OrderUsecase.GetOrders(page, useID.(string))
+	// Fetch the orders using the userID from the token
+	res, err := uc.OrderUsecase.GetOrders(page, userID.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

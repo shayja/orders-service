@@ -16,10 +16,10 @@ type OrderRepository struct {
 
 const PAGE_SIZE = 20
 // Get all user orders
-func (r *OrderRepository) GetAllOrders(page int, useID string) ([]*entities.Order, error) {
+func (r *OrderRepository) GetAllOrders(page int, userID string) ([]*entities.Order, error) {
 	offset := PAGE_SIZE * (page - 1)
 	query := `SELECT * FROM get_user_orders($1, $2, $3)`
-	rows, err := r.Db.Query(query, useID, offset, PAGE_SIZE)
+	rows, err := r.Db.Query(query, userID, offset, PAGE_SIZE)
 	if err != nil {
 		fmt.Print(err)
 		return nil, err
