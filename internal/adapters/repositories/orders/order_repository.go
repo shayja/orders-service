@@ -67,9 +67,7 @@ func (r *OrderRepository) Create(orderRequest *entities.OrderRequest) (string, e
 		orderRequest.TotalPrice,
 		orderRequest.Status,
 		pq.Array(orderRequest.OrderDetails),
-		&newID,
-	)
-
+		&newID)
 	if err != nil {
 		fmt.Print(err)
 		return "", err
